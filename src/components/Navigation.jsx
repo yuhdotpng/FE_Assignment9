@@ -1,9 +1,19 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate} from 'react-router-dom';
 import { useArticles } from '../context/ArticlesContext';
+import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
 
-function Navigation() {
+function Navigation({ onSearch }) {
   const location = useLocation();
   const { savedArticles } = useArticles();
+  const [searchQuery, setSearchQuery] = useState('');
+  const {user, isAuthenticated, logout} = useAuth();
+  const navigate = useNavigate();
+
+    const handleLogout = () => {
+    logout();
+    navigate('/');
+    };
 
   return (
     <nav>
@@ -32,9 +42,24 @@ function Navigation() {
             </Link>
           </div>
         </div>
-        {/* ⚠️ SECURITY ISSUE: No login/logout functionality */}
         <div className="nav-user">
-          No authentication required
+          <div className="auth-section">
+          {isAuthenticated ? (
+            <div className="user-info">
+              <span className="username">👤 {user.username}</span>
+              {user.role === 'admin' && (
+                <span className="admin-badge">Admin</span>
+              )}
+              <button onClick={handleLogout} className="logout-button">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="login-link">
+              Login
+            </Link>
+          )}
+        </div>
         </div>
       </div>
     </nav>
