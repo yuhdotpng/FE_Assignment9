@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function Navigation({ onSearch }) {
   const location = useLocation();
-  const { savedArticles } = useArticles();
+  const { getUserSavedArticles } = useArticles();
   const [searchQuery, setSearchQuery] = useState('');
   const {user, isAuthenticated, logout} = useAuth();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ function Navigation({ onSearch }) {
               to="/saved" 
               className={`nav-link ${location.pathname === '/saved' ? 'active' : ''}`}
             >
-              Saved Articles ({savedArticles.length})
+              Saved Articles ({getUserSavedArticles.length})
             </Link>
           </div>
         </div>
