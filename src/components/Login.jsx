@@ -72,6 +72,7 @@ function Login() {
             >
               <option value="regular">Regular User</option>
               <option value="premium">Premium User</option>
+              <option value = "admin"> Admin User</option>
             </select>
           </div>
 
