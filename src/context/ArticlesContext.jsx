@@ -65,6 +65,13 @@ export function ArticlesProvider({ children }) {
   const isArticleSaved = (url) => {
   return getUserSavedArticles().some(a => a.url === url);
 };
+  const getAllUserArticle = () => {
+  const allArticles = JSON.parse(localStorage.getItem('savedArticlesByUser')) || {};
+  return allArticles;
+}
+
+
+
 
   return (
     <ArticlesContext.Provider 
@@ -72,7 +79,8 @@ export function ArticlesProvider({ children }) {
         getUserSavedArticles, 
         saveArticle, 
         removeArticle, 
-        isArticleSaved 
+        isArticleSaved,
+        getAllUserArticle
       }}
     >
       {children}
