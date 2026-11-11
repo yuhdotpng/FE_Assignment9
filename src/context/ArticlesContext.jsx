@@ -26,16 +26,26 @@ export function ArticlesProvider({ children }) {
   return savedArticlesByUser[user.username] || [];
 };
 
-  const saveArticle = (article) => {
-    setSavedArticlesByUser(prev => {
-      // Check if article is already saved
-      if (prev.find(a => a.url === article.url)) {
-        return prev;
-      }
-      return [...prev, article];
-    });
-  };
+  const saveArticle = (article) =>{
+  if (!user) return;
 
+  const username = user.username;
+
+  setSavedArticlesByUser(prev => {
+    const userArticles = prev[username] || [];
+
+    // Check for duplicates in this user's list.
+    if (userArticles.some(a => a.url === article.url)) {
+      return prev;
+    }
+
+    // Preserve other users' entries and update this user's list.
+    return {
+      ...prev,
+      [username]: [...userArticles, article]
+    };
+  });
+};
   
 
  const removeArticle = (url) => {
@@ -53,8 +63,8 @@ export function ArticlesProvider({ children }) {
 
 
   const isArticleSaved = (url) => {
-    return getUserSavedArticles(a => a.url === url);
-  };
+  return getUserSavedArticles().some(a => a.url === url);
+};
 
   return (
     <ArticlesContext.Provider 
