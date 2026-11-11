@@ -3,6 +3,7 @@ import { useArticles } from '../context/ArticlesContext';
 
 function SavedArticlesPage() {
   const { getUserSavedArticles } = useArticles();
+  const savedArticles = getUserSavedArticles();
 
   return (
     <div>
@@ -16,14 +17,14 @@ function SavedArticlesPage() {
         </p>
       </div>
 
-      {getUserSavedArticles.length === 0 ? (
+      {savedArticles.length === 0 ? (
         <div className="message">
           No saved articles yet. Browse articles and click the bookmark icon to save them!
         </div>
       ) : (
         <div className="articles-grid">
-          {getUserSavedArticles.map((article, user) => (
-            <ArticleCard key={user.username} article={article} />
+          {savedArticles.map((article, user) => (
+            <ArticleCard key={article.url} article={article} />
           ))}
         </div>
       )}
