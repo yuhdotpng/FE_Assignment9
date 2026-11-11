@@ -6,8 +6,9 @@ import { useState } from 'react';
 function Navigation({ onSearch }) {
   const location = useLocation();
   const { getUserSavedArticles } = useArticles();
+  const savedArticles = getUserSavedArticles();
   const [searchQuery, setSearchQuery] = useState('');
-  const {user, isAuthenticated, logout} = useAuth();
+  const {user, isAuthenticated, logout, hasRole} = useAuth();
   const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -34,12 +35,17 @@ function Navigation({ onSearch }) {
               Search
             </Link>
             {/* ⚠️ SECURITY ISSUE: No authentication required to access saved articles */}
+            {isAuthenticated && (
             <Link 
               to="/saved" 
               className={`nav-link ${location.pathname === '/saved' ? 'active' : ''}`}
             >
-              Saved Articles ({getUserSavedArticles.length})
+              Saved Articles ({savedArticles.length})
             </Link>
+            )}
+            {hasRole('admin') && (
+              <Link to="/admin" className="nav-link admin-link">Admin</Link>
+            )}
           </div>
         </div>
         <div className="nav-user">
